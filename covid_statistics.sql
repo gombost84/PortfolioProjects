@@ -5,9 +5,7 @@ SELECT location, MAX(CAST(total_deaths AS INT)) as TotalDeaths
 FROM PortfolioProject..CovidDeaths$
 
 WHERE continent IS NULL
-AND location <> 'European Union'
-AND location <> 'World'
-AND location <> 'International'
+AND location NOT IN ('World', 'European Union', 'International')
 
 GROUP BY location
 ORDER BY TotalDeaths desc
