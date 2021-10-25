@@ -82,11 +82,18 @@ FROM #my_temp_table
 --Create views for visualisation
 --Continent level view
 
-CREATE VIEW ContinentLevelView AS
-SELECT location, MAX(CAST(total_deaths AS INT)) as TotalDeaths
-FROM PortfolioProject..CovidDeaths$
-WHERE continent IS NULL
-AND location <> 'European Union'
-AND location <> 'World'
-AND location <> 'International'
-GROUP BY location, total_deaths
+USE PortfolioProject
+GO
+
+CREATE VIEW WorkingView AS
+SELECT cd.continent, cd.location, cd.date, cd.population, cv.new_vaccinations, SUM(CONVERT(INT, cv.new_vaccinations)) OVER (PARTITION BY cd.location ORDER BY cd.location, cd.date) as TotalVacc
+FROM PortfolioProject..CovidDeaths$ cd
+JOIN PortfolioProject..CovidVaccinations$ cv
+    ON cd.location = cv.location
+    and cd.date = cv.date
+WHERE cd.continent = 'Europe'
+
+SELECT TOP (50) *
+FROM WorkingView
+GROUP BY continent, location, date, population, new_vaccinations, TotalVacc
+ORDER BY location, date
