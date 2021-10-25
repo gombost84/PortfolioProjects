@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 --Get a feel of the dataset
 --Filtering out everything that is not a country to get global stats
 
@@ -194,4 +193,3 @@ SELECT TOP (50) *
 FROM WorkingView
 GROUP BY continent, location, date, population, new_vaccinations, TotalVacc
 ORDER BY location, date
->>>>>>> 1893761 (Added remote branch to local.)
